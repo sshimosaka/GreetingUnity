@@ -10,6 +10,8 @@ public class DateCheck : MonoBehaviour
     //前回の起動日をロードする変数
     int oldMonth;
     int oldDay;
+    Ray ray;
+    RaycastHit hit;
 
     public AudioClip voice_date0101;
     public AudioClip voice_date0115;
@@ -38,6 +40,9 @@ public class DateCheck : MonoBehaviour
     public AudioClip voice_date1224;
     public AudioClip voice_date1225;
     public AudioClip voice_date1231;
+    //確認用
+    //public AudioClip voice_date0102;
+
     private AudioSource univoice;
     public AudioClip[,] voice_date;
     // Start is called before the first frame update
@@ -87,6 +92,10 @@ public class DateCheck : MonoBehaviour
         voice_date[12, 24] = voice_date1224;
         voice_date[12, 25] = voice_date1225;
         voice_date[12, 31] = voice_date1231;
+        //確認用
+        //voice_date[1, 2] = voice_date0102;
+        /* 前回と今回の起動日を比較してそれ以後は再生しないという要件
+           今回はそれだと困るためクリックしたら再生できるようにしたい
         if(oldMonth != nowMonth || oldDay != nowDay)
         {
             //該当ボイスがあるかをチェック
@@ -94,12 +103,29 @@ public class DateCheck : MonoBehaviour
             {
                 univoice.PlayOneShot(voice_date[nowMonth, nowDay]);
             }
-        }
+        }*/
     }
 
     // Update is called once per frame
-    void Update()
+    void Update(){
+        /*Unitychanをクリックしたら実行するもの
+        //問題点として該当日にならないと他の声が聴けない
+        if(Input.GetButtonDown("Fire1"))
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //Debug.Log("rayゾーン");
+            if(Physics.Raycast(ray,out hit, 100) && voice_date[nowMonth, nowDay] != null){
+                //Debug.Log("該当日");
+                univoice.PlayOneShot(voice_date[nowMonth, nowDay]);
+            } else {
+                //Debug.Log("該当日じゃない");
+                univoice.Play();
+            }
+        }*/
+    }
+    public void OnNewYearButton()
     {
-        
+        //ボタンを押すことによって好きなタイミングで音声が再生されるけど該当ボイス分のボタンが必要になる
+        univoice.PlayOneShot(voice_date[1, 1]);
     }
 }
